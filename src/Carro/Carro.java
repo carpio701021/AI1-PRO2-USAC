@@ -7,6 +7,8 @@ package Carro;
 
 import Laberinto.Camino;
 import Laberinto.Genotipo;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *
@@ -87,6 +89,33 @@ public class Carro {
     
     //carro.volverAlInicio(camino.getGenotipo());
     public void volverAlInicio(Genotipo gt){
+        int[] cromosomas = gt.getCromosomas();
+        for (int i=cromosomas.length-1;i>=0;i--){
+            switch(cromosomas[i]){
+                case 0:
+                    this.moverSur();
+                    continue;
+                case 1:
+                    this.moverNorte();
+                    continue;
+                case 2:
+                    this.moverOeste();
+                    continue;
+                case 3:
+                    this.moverEste();
+                    continue;
+                default:
+                    System.out.println("Error en volverAlInicio()");
+                break;
+            }
+        }
+    }   
+    
+    
+    //carro.volverAlInicio(camino.getGenotipo());
+    public void volverAlInicioGuiando(Genotipo gt){
+        Queue q = new LinkedList();
+        
         int[] cromosomas = gt.getCromosomas();
         for (int i=cromosomas.length-1;i>=0;i--){
             switch(cromosomas[i]){

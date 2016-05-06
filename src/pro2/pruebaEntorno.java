@@ -184,29 +184,34 @@ public class pruebaEntorno extends javax.swing.JPanel {
                  */// ^^^^^^^^^^^^^^^^^^^^^^^^^^
                  
                  
-                int erroneo = camino.setEstado(
+                int procede = camino.setEstado(
                         jToggleButton2.isSelected(),
                         jToggleButton5.isSelected(),
                         jToggleButton4.isSelected(),
                         jToggleButton3.isSelected());
                 
-                if (erroneo==1) {
-                    genotiposErroneos.add(camino.getGenotipo());
-                    
-                    System.out.println("Camino erroneo, volver a comenzar");
-                    //patron de retorno
-                    carro.volverAlInicio(camino.getGenotipo());
-                    System.out.println("Carro está de nuevo en el inicio");
-                    carro.moverANuevoIntento(camino.getIntentoNuevoGenotipo());
-                    algoritmo.nuevoGenotipo(camino.getGenotipo());
-                    //buscar nuevo camino y generar nuevo genotipo
-                    //nodo inexplorado
-                } else if (erroneo==0){
-                    int next = algoritmo.getNext();
-                    camino.setNext(next);
-                    carro.mover(next);
-                }else if (erroneo==2){
-                    //secuencia de salida, con instrucciones al rescatado
+                switch (procede) {
+                    case 1:
+                        genotiposErroneos.add(camino.getGenotipo());
+                        System.out.println("Camino erroneo, volver a comenzar");
+                        //patron de retorno
+                        carro.volverAlInicio(camino.getGenotipo());
+                        System.out.println("Carro está de nuevo en el inicio");
+                        carro.moverANuevoIntento(camino.getIntentoNuevoGenotipo());
+                        algoritmo.nuevoGenotipo(camino.getGenotipo());
+                        //buscar nuevo camino y generar nuevo genotipo
+                        //nodo inexplorado
+                        break;
+                    case 0:
+                        int next = algoritmo.getNext();
+                        camino.setNext(next);
+                        carro.mover(next);
+                        break;
+                //secuencia de salida, con instrucciones al rescatado
+                    case 2:
+                        break;
+                    default:
+                        break;
                 }
                 
 

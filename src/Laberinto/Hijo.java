@@ -18,6 +18,7 @@ public class Hijo {
     private boolean entradaSalida = false;
     private boolean caminoErroneo = false;
     private boolean explorado = false;
+    private boolean victima = false;
 
     public boolean isExplorado() {
         return explorado;
@@ -33,6 +34,14 @@ public class Hijo {
 
     public void setExplorado() {
         this.explorado = true;
+    }
+
+    public void setAsVictima() {
+        this.explorado = true;
+    }
+    
+    public boolean isVictiva(){
+        return this.victima;
     }
 
     public void setAsCaminoErroneo() {
