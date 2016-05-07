@@ -5,13 +5,9 @@
  */
 package Agentes;
 
-import Agentes.AgentePC.prueba;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,16 +27,14 @@ public class AgentePC2 extends Agent{
         @Override
         public void action() {
             ACLMessage msg = myAgent.receive();
+            
             if (msg != null) 
             {
-                try {
-                    prueba c = (prueba)msg.getContentObject();
-                    //String [] vec = msg.getContent().split(",");
-                    
-                    System.out.println( " recibiendo " +c.cad );
-                } catch (UnreadableException ex) {
-                    Logger.getLogger(AgentePC2.class.getName()).log(Level.SEVERE, null, ex);
+                if(msg.getContent().contains("grafica"))
+                {
+                    Gui.grafica = msg.getContent().replace("grafica", "");
                 }
+                System.out.println( " recibiendo " +msg.getContent());
                 
             }
             else
