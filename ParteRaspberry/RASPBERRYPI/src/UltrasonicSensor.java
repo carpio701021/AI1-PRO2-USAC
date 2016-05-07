@@ -98,8 +98,8 @@ public class UltrasonicSensor {
     }
     
     public static void main( String[] args ) {
-        Pin echoPin = RaspiPin.GPIO_00; // PI4J custom numbering (pin 11)
-        Pin trigPin = RaspiPin.GPIO_07; // PI4J custom numbering (pin 7)
+        Pin echoPin = RaspiPin.GPIO_29; // PI4J custom numbering (pin 11)
+        Pin trigPin = RaspiPin.GPIO_28; // PI4J custom numbering (pin 7)
         UltrasonicSensor monitor = new UltrasonicSensor( echoPin, trigPin );
         
         while( true ) {
