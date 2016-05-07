@@ -15,11 +15,11 @@ import java.util.Queue;
  * @author javier
  */
 public class Carro {
-    
+
     private int direccionActual = Camino.NORTE;
-    
-    public void mover(int cardinalidad){
-        switch(cardinalidad){
+
+    public void mover(int cardinalidad) {
+        switch (cardinalidad) {
             case 0:
                 moverNorte();
                 break;
@@ -36,106 +36,91 @@ public class Carro {
                 break;
         }
     }
-    
-    public void moverNorte(){
+
+    public void moverNorte() {
         System.out.println("Carro se movio al norte");
     }
-    
-    public void moverSur(){
+
+    public void moverSur() {
         System.out.println("Carro se movio al sur");
     }
-        
-    public void moverEste(){
+
+    public void moverEste() {
         System.out.println("Carro se movio al este");
     }
-        
-    public void moverOeste(){
+
+    public void moverOeste() {
         System.out.println("Carro se movio al oeste");
     }
-    
-    public boolean[] tomarEntorno(){
+
+    public int[] tomarEntorno() {
         System.out.println("Toma de entorno");
-        boolean[] res = new boolean[4];
-        res[0]=true; //norte
-        res[1]=false; //sur
-        res[2]=true; //este
-        res[3]=false; //oeste
+        int[] res = new int[4];
+        res[0] = 0; //norte
+        res[1] = 1; //sur
+        res[2] = 0; //este
+        res[3] = 1; //oeste
         return res;
     }
-    
-    public void moverANuevoIntento(Genotipo gt){
+
+    public void moverANuevoIntento(Genotipo gt) {
         int[] cromosomas = gt.getCromosomas();
         //for (int i=cromosomas.length-1;i>=0;i--){
-        for (int i=0;i<cromosomas.length;i++){
-            switch(cromosomas[i]){
-                case 0:
-                    this.moverNorte();
-                    continue;
-                case 1:
-                    this.moverSur();
-                    continue;
-                case 2:
-                    this.moverEste();
-                    continue;
-                case 3:
-                    this.moverOeste();
-                    continue;
-                default:
-                    System.out.println("Error en moverANuevoIntento");
-                break;
-            }
+        for (int i = 0; i < cromosomas.length; i++) {
+            this.mover(cromosomas[i]);
         }
     }
-    
+
     //carro.volverAlInicio(camino.getGenotipo());
-    public void volverAlInicio(Genotipo gt){
+    public void volverAlInicio(Genotipo gt) {
         int[] cromosomas = gt.getCromosomas();
-        for (int i=cromosomas.length-1;i>=0;i--){
-            switch(cromosomas[i]){
-                case 0:
-                    this.moverSur();
-                    continue;
-                case 1:
-                    this.moverNorte();
-                    continue;
-                case 2:
-                    this.moverOeste();
-                    continue;
-                case 3:
-                    this.moverEste();
-                    continue;
-                default:
-                    System.out.println("Error en volverAlInicio()");
-                break;
-            }
-        }
-    }   
-    
-    
-    //carro.volverAlInicio(camino.getGenotipo());
-    public void volverAlInicioGuiando(Genotipo gt){
-        Queue q = new LinkedList();
-        
-        int[] cromosomas = gt.getCromosomas();
-        for (int i=cromosomas.length-1;i>=0;i--){
-            switch(cromosomas[i]){
-                case 0:
-                    this.moverSur();
-                    continue;
-                case 1:
-                    this.moverNorte();
-                    continue;
-                case 2:
-                    this.moverOeste();
-                    continue;
-                case 3:
-                    this.moverEste();
-                    continue;
-                default:
-                    System.out.println("Error en volverAlInicio()");
-                break;
-            }
+        for (int i = cromosomas.length - 1; i >= 0; i--) {
+            this.mover(cromosomas[i]);
         }
     }
-    
+
+    //carro.volverAlInicio(camino.getGenotipo());
+    public void volverAlInicioGuiando(Genotipo gt) {
+        int[] cromosomas = gt.getCromosomas();
+        Queue<Integer> q = new LinkedList();
+
+        for (int i = cromosomas.length - 1; i >= 0; i--) {
+            q.add(cromosomas[i]);
+
+            this.mover(cromosomas[i]);
+
+            if (i > 2) {
+                enviarMensajeAGuiando(q.poll());
+            }
+        }
+
+        while (q.size() > 0) {
+            enviarMensajeAGuiando(q.poll());
+        }
+    }
+
+    private void enviarMensajeAGuiando(int direccion) {
+        switch (direccion) {
+            case 0:
+                //this.moverSur();
+                //mensaje de mover al sur
+                break;
+            case 1:
+                //this.moverNorte();
+                //mensaje de mover al norte
+                break;
+            case 2:
+                //this.moverOeste();
+                //mensaje de mover al oeste
+                break;
+            case 3:
+                //this.moverEste();
+                //mensaje de mover al este
+                break;
+            default:
+                System.out.println("Error en volverAlInicioGuiando()");
+                break;
+        }
+    }
+
 }
