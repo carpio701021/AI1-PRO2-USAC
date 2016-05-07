@@ -39,8 +39,8 @@ public class Hijo {
     public void setAsVictima() {
         this.explorado = true;
     }
-    
-    public boolean isVictiva(){
+
+    public boolean isVictiva() {
         return this.victima;
     }
 
@@ -99,6 +99,35 @@ public class Hijo {
         }
         System.out.println();
         return this;
+    }
+
+    public int addRescatando(int[] direcciones) {
+        Hijo h = new Hijo();
+        h.setAsVictima();
+
+        int dir = ((direcciones[0]==2)?10:((direcciones[1]==2)?11:((direcciones[2]==2)?12:(13))));
+        
+        switch (dir) {
+            case 10:
+                this.norte = h;
+                this.norte.sur = this;
+                break;
+            case 11:
+                this.sur = h;
+                this.sur.norte = this;
+                break;
+            case 12:
+                this.este = h;
+                this.este.oeste = this;
+                break;
+            case 13:
+                this.oeste = h;
+                this.oeste.este = this;
+                break;
+            default:
+                return -1;
+        }
+        return dir;
     }
 
 }

@@ -122,11 +122,10 @@ public class Camino {
     public int setEstado(int[] es) {
         int caminos = 0;
         /**
-         * 0: hay obstaculo 1: hay camino 2: hay rescatado
+         * 0: hay obstaculo, 1: hay camino, >2: hay rescatado
          */
-        boolean encontroRescatado = (es[0] == 2 || es[1] == 2 || es[2] == 2 || es[3] == 2);
-        if (encontroRescatado) {
-            return 2;
+        if (es[0] == 2 || es[1] == 2 || es[2] == 2 || es[3] == 2) {
+            return this.actual.addRescatando(es);
         } else {
             return setEstado(es[0] == 1, es[1] == 1, es[2] == 1, es[3] == 1);
         }
