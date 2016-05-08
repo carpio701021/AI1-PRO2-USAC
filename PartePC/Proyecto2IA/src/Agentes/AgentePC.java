@@ -29,7 +29,7 @@ public class AgentePC extends Agent  {
             if (!mensaje.equals(""))
             { 
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                    msg.addReceiver(new AID("AgentePC2",AID.ISLOCALNAME));
+                    msg.addReceiver(new AID("AgentePI",AID.ISLOCALNAME));
                     msg.setLanguage("English");
                     msg.setOntology("Weather-forecast-ontology");
                     //msg.setContentObject(a);

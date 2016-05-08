@@ -19,6 +19,8 @@ public class AgentePC2 extends Agent{
      * Clase que establece el comportamiento del AgentePC
      * @author Braulio Padilla
      */
+    
+    public Gui app;
     public class comportamiento extends CyclicBehaviour
     {
         private comportamiento() {
@@ -32,8 +34,10 @@ public class AgentePC2 extends Agent{
             {
                 if(msg.getContent().contains("grafica"))
                 {
-                    Gui.grafica = msg.getContent().replace("grafica", "");
+                    app.ejecutarDOT(msg.getContent().replace("grafica", ""));
+                    app.actualizarImagen();
                 }
+                
                 System.out.println( " recibiendo " +msg.getContent());
                 
             }
@@ -46,7 +50,7 @@ public class AgentePC2 extends Agent{
     
     @Override
     protected void setup() {
-        Gui app = new Gui();
+        app = new Gui();
         app.setVisible(true);
         System.out.println( getAID().getName() + " Inicializado");
         addBehaviour(new comportamiento());//300000 300 segundos o 5 minutos

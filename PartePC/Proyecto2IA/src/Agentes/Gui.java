@@ -62,19 +62,18 @@ public class Gui extends JFrame implements ActionListener {
     public static final String RECORD = "record";
     public static final String STOPRECORD ="stop record";
     
-    public JLabel carpioLabel;
-    public static String grafica = ""; 
+    public JLabel carpioLabel; 
     
-    private Carro car;
+    private AtributosDelCarro car;
     public static String message = "";
     public static String TEXTAREA = "";
     
     public void InitCarProperties()
     {
-        car = Carro.ReadInstance();
+        car = AtributosDelCarro.ReadInstance();
         if(car == null)
         {
-            car = new Carro(100,70,45,44);
+            car = new AtributosDelCarro(100,70,45,44);
         }
         
         this.TextRecto.setText(car.getDelayRecto() + "");
@@ -183,28 +182,7 @@ public class Gui extends JFrame implements ActionListener {
         carpioLabel = new JLabel("carpio");
         carpioPanel.add(carpioLabel);
         
-        Thread h = new Thread(new Runnable()
-        {
-            @Override
-            public void run() {
-                try {
-                    if(!grafica.equals(""))
-                    {
-                        //pintar el labele carpio imagen yuya mierda
-                        //carpioLabel;
-                        ejecutarDOT(grafica);
-                        actualizarImagen();
-
-                        grafica = "";
-                    }
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-        });
-        h.start();
+        
         //panel1.setLayout(new GridLayout(20,20));
 
         
@@ -277,13 +255,13 @@ public class Gui extends JFrame implements ActionListener {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                Carro.SaveInstance(car);
+                AtributosDelCarro.SaveInstance(car);
                 System.exit(0);
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Carro.SaveInstance(car);
+                AtributosDelCarro.SaveInstance(car);
                 System.exit(0);
             }
 
@@ -310,7 +288,7 @@ public class Gui extends JFrame implements ActionListener {
         
         }
     
-    private void actualizarImagen() {
+    public void actualizarImagen() {
 
         try {
             Image img = ImageIO.read(new File("grafica.png"));
@@ -330,7 +308,7 @@ public class Gui extends JFrame implements ActionListener {
     }
     
     
-    private void ejecutarDOT(String codigo){
+    public void ejecutarDOT(String codigo){
         String dotPath = "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
         String fileInputPath = "sourceGraphviz.dot";
         ProcessBuilder pbuilder;
