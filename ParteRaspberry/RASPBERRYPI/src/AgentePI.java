@@ -5,11 +5,8 @@ import Laberinto.Coordinador;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import com.pi4j.wiringpi.SoftPwm;
 import jade.core.AID;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -28,7 +25,11 @@ public class AgentePI extends Agent {
 
         Carro car = new Carro();
         private boolean iniciar;
-        public Comportamiento() {
+        
+        
+        
+        public Comportamiento() 
+        {
             
         }
          
