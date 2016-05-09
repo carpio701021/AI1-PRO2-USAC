@@ -5,13 +5,9 @@
  */
 package Agentes;
 
-import Agentes.AgentePC.prueba;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -23,6 +19,8 @@ public class AgentePC2 extends Agent{
      * Clase que establece el comportamiento del AgentePC
      * @author Braulio Padilla
      */
+    
+    public Gui app;
     public class comportamiento extends CyclicBehaviour
     {
         private comportamiento() {
@@ -31,16 +29,16 @@ public class AgentePC2 extends Agent{
         @Override
         public void action() {
             ACLMessage msg = myAgent.receive();
+            
             if (msg != null) 
             {
-                try {
-                    prueba c = (prueba)msg.getContentObject();
-                    //String [] vec = msg.getContent().split(",");
-                    
-                    System.out.println( " recibiendo " +c.cad );
-                } catch (UnreadableException ex) {
-                    Logger.getLogger(AgentePC2.class.getName()).log(Level.SEVERE, null, ex);
+                if(msg.getContent().contains("grafica"))
+                {
+                    app.ejecutarDOT(msg.getContent().replace("grafica", ""));
+                    app.actualizarImagen();
                 }
+                
+                System.out.println( " recibiendo " +msg.getContent());
                 
             }
             else
@@ -52,7 +50,7 @@ public class AgentePC2 extends Agent{
     
     @Override
     protected void setup() {
-        Gui app = new Gui();
+        app = new Gui();
         app.setVisible(true);
         System.out.println( getAID().getName() + " Inicializado");
         addBehaviour(new comportamiento());//300000 300 segundos o 5 minutos

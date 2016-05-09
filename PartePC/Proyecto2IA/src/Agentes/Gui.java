@@ -11,13 +11,18 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -57,16 +62,18 @@ public class Gui extends JFrame implements ActionListener {
     public static final String RECORD = "record";
     public static final String STOPRECORD ="stop record";
     
-    private Carro car;
+    public JLabel carpioLabel; 
+    
+    private AtributosDelCarro car;
     public static String message = "";
     public static String TEXTAREA = "";
     
     public void InitCarProperties()
     {
-        car = Carro.ReadInstance();
+        car = AtributosDelCarro.ReadInstance();
         if(car == null)
         {
-            car = new Carro(100,70,45,44);
+            car = new AtributosDelCarro(100,70,45,44);
         }
         
         this.TextRecto.setText(car.getDelayRecto() + "");
@@ -172,14 +179,17 @@ public class Gui extends JFrame implements ActionListener {
         
         //Carpio Panel Area
         JPanel carpioPanel = new JPanel();
+        carpioLabel = new JLabel("carpio");
+        carpioPanel.add(carpioLabel);
+        
+        
         //panel1.setLayout(new GridLayout(20,20));
 
         
         //Record audio area
         JPanel records = new JPanel();
         
-        
-        
+
         record = new JButton(RECORD);
         stopRecord = new JButton(STOPRECORD);
         progress = new JProgressBar();
@@ -245,13 +255,13 @@ public class Gui extends JFrame implements ActionListener {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                Carro.SaveInstance(car);
+                AtributosDelCarro.SaveInstance(car);
                 System.exit(0);
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
-                Carro.SaveInstance(car);
+                AtributosDelCarro.SaveInstance(car);
                 System.exit(0);
             }
 
@@ -277,7 +287,69 @@ public class Gui extends JFrame implements ActionListener {
         });
         
         }
+    
+    public void actualizarImagen() {
 
+        try {
+            Image img = ImageIO.read(new File("grafica.png"));
+
+            this.carpioLabel.setIcon(null);
+            //ImageIcon n = new ImageIcon("grafica.png");
+            int min = ((carpioLabel.getWidth() < carpioLabel.getHeight()) ? carpioLabel.getWidth() : carpioLabel.getHeight());
+            ImageIcon n = new ImageIcon(img.getScaledInstance(min, min, Image.SCALE_SMOOTH));
+
+            n.getImage().flush();
+            this.carpioLabel.setIcon(n);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    
+    public void ejecutarDOT(String codigo){
+        String dotPath = "C:\\Program Files (x86)\\Graphviz2.38\\bin\\dot.exe";
+        String fileInputPath = "sourceGraphviz.dot";
+        ProcessBuilder pbuilder;
+        String fileOutputPath = "grafica.png";
+        //String tParam = "-Tpng";
+        //String tOParam = "-o";
+        File dot = new File(fileInputPath);
+        File jpg = new File(fileOutputPath);
+        if (dot.exists()) {
+            dot.delete();
+        }
+        if (jpg.exists()) {
+            jpg.delete();
+        }
+        FileWriter fw;
+
+        try {
+            fw = new FileWriter(dot);
+            fw.write(codigo);
+            fw.close();
+            //Process a = new ProcessBuilder(dotPath, tParam, tOParam, fileOutputPath, fileInputPath).start();
+            Process a = new ProcessBuilder(dotPath, "-Kfdp", "-n", "-Tpng", "-o", fileOutputPath, fileInputPath).start();
+            //Process a = new ProcessBuilder("dot", "-Kfdp", "-n", "-Tpng", "-o", fileOutputPath, fileInputPath).start();
+            //pbuilder = new ProcessBuilder("dot", "-Tpng", "-o", fileOutputPath, fileInputPath);
+
+            //pbuilder = new ProcessBuilder("dot", "-Kfdp ", "-n", "-Tpng", "-o", fileOutputPath, fileInputPath);
+            //pbuilder.redirectErrorStream(true);
+            //Ejecuta el proceso
+            //pbuilder.start();
+            //System.out.println("Dot: ");
+            a.waitFor();
+        } catch (IOException ex) {
+            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Gui.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+
+
+    }
+        
     @Override
     public void actionPerformed(ActionEvent e) {
         String comando = e.getActionCommand(); 

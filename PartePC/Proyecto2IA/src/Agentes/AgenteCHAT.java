@@ -10,6 +10,8 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -49,7 +51,7 @@ public class AgenteCHAT extends Agent{
                                            "Gracias"
          };
          
-         private ArrayList<String[]> chats;
+         private ArrayList<String[]> chats ;
          boolean isInMessage;
          
          int  numeroChat;
@@ -137,6 +139,7 @@ public class AgenteCHAT extends Agent{
          }
 
         public comportamiento() {
+            chats = new  ArrayList<>();
             chats.add(chat1);
             chats.add(chat2);
             chats.add(chat3);
@@ -163,25 +166,30 @@ public class AgenteCHAT extends Agent{
         }
         @Override
         public void action() {
-            if(iniciar){
-                if(turno)
-                {   
-                    Chat("");
-                }
-                else
-                {
-                    ACLMessage msg = myAgent.receive();
-                    if (msg != null) 
-                    {
-                        System.out.println( " recibiendo " +msg.getContent() );
-                        Chat(msg.getContent());
-                    }
-                    else
-                    {
-                            block();
-                    }        
-                }
-            }
+             try {
+                 if(iniciar){
+                     if(turno)
+                     {
+                         Chat("");
+                     }
+                     else
+                     {
+                         ACLMessage msg = myAgent.receive();
+                         if (msg != null)
+                         {
+                             System.out.println( " recibiendo " +msg.getContent() );
+                             Chat(msg.getContent());
+                             Thread.sleep(5000);
+                         }
+                         else
+                         {
+                             block();
+                         }
+                     }
+                 }
+             } catch (InterruptedException ex) {
+                 Logger.getLogger(AgenteCHAT.class.getName()).log(Level.SEVERE, null, ex);
+             }
         } 
     }
     
